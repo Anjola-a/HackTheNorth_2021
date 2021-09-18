@@ -1,13 +1,10 @@
-# import nltk
+import nltk
 # from nltk.book import *
 #
 # x = text1.concordance_list("monstrous")
 #
 # print(type(x))
 
-# import PyPDF2
-#
-# reader = PyPDF2.PdfFileReader('Ben_Sun_Resume.pdf')
 
 from io import StringIO
 
@@ -17,6 +14,7 @@ from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
+
 
 
 def convert_pdf_to_string(file_path):
@@ -59,6 +57,7 @@ def split_to_title_and_pagenum(table_of_contents_entry):
 
 import PyPDF2
 import csv
+data = ["Total shareholders' equity, ending balances"]
 
 reader = PyPDF2.PdfFileReader(
     'test.pdf')
@@ -73,7 +72,7 @@ writer = PyPDF2.PdfFileWriter()
 
 writer.addPage(reader.getPage(36))
 
-output_filename = 'output.pdf'
+output_filename = 'output.txt'
 
 with open(output_filename, 'wb') as output:
     writer.write(output)
@@ -81,4 +80,50 @@ with open(output_filename, 'wb') as output:
 text = convert_pdf_to_string(
     'output.pdf')
 
-print(type(text))
+
+
+
+from nltk.tokenize import MWETokenizer, word_tokenize, TweetTokenizer
+
+
+# tokenizer = TweetTokenizer()
+# print(tokenizer.tokenize(text))
+
+tokenizer = MWETokenizer()
+tokenizer.add_mwe(('Total', 'shareholders', "’", "equity"))
+#print(f'Multi-word expression tokenization = {tokenizer.tokenize((word_tokenize(text)))}')
+mwe = tokenizer.tokenize((word_tokenize(text)))
+
+sentence = nltk.Text(mwe)
+
+print(sentence[10:20])
+
+
+# Replaces newline characters with spaces
+#
+# processed_string = list((map(lambda s: s.replace("\n", " "), text)))
+#
+# output = ""
+# for letter in processed_string:
+#     output += letter
+
+
+
+
+
+
+#print(text)
+#text.common_contexts(["Total", "shareholders"])
+#print(text.concordance_list("equity"))
+#text.collocations()
+
+
+#sentence.concordance("Total_shareholders_'_equity")
+
+# Importing package and summarizer
+# import gensim
+# from gensim.summarization import summarize
+#
+# short_summary = gensim.summarize(sentence)
+# print(short_summary)
+
